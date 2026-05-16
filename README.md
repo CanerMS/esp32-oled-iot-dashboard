@@ -1,20 +1,5 @@
 # ESP32 OLED IoT Dashboard
 
-## Project Structure
-
-'''
-esp32-oled-iot-dashboard/
-├── README.md
-├── platformio.ini
-├── src/
-│   └── main.cpp
-└── docs/
-    └── images/
-        ├── prototype.jpg
-        ├── oled-output1.jpg
-        └── oled-output2.jpg
-'''
-
 ## Hardware Prototype
 
 The ESP32 is connected to the SSD1306 OLED display over I2C.
