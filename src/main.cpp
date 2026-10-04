@@ -165,10 +165,23 @@ void fetchWeatherJson() {
     "https://api.open-meteo.com/v1/forecast"
     "?latitude=50.7753"
     "&longitude=6.0839"
-    "&hourly=temperature_2m,weather_code";
-
+    "&hourly=temperature_2m,weather_code"
+    "&timezone=Europe&2FBerlin" // 2F is the URL encoded form of '/'
+    "&forecast_days=1";
 
   // GET
+  http.begin(client, url);
+
+  int httpCode = http.GET();
+
+  Serial.print("HTTP status: ");
+  Serial.println(httpCode);
+
+  if (httpCode==200) {
+    String payload = http.getString();
+    Serial.println(payload);
+  } 
+
 }
 
 void setup() {
@@ -189,6 +202,7 @@ void setup() {
 
   delay(1000);
   connectWiFi();
+  fetchWeatherJson();
 }
 
 void loop() {
