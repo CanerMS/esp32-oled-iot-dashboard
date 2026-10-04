@@ -38,6 +38,7 @@ bool showYoutubeScreen = true;
 WiFiClientSecure client;
 HTTPClient http;
 
+
 void drawYoutubeScreen() {
   display.clearDisplay();
 
@@ -154,7 +155,13 @@ void connectWiFi() {
   }
 }
 
+void fetchWeatherJson() {
+  client.setInsecure();
+}
+
 void setup() {
+
+
   Serial.begin(115200);
 
   Wire.begin(SDA_PIN, SCL_PIN);
