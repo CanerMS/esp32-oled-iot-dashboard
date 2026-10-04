@@ -2,6 +2,7 @@
 #include <Wire.h>  
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+#include <ArduinoJson.h>
 
 // Wifi Connection
 #include <WiFi.h>
@@ -157,6 +158,7 @@ void connectWiFi() {
 void fetchWeatherJson() {
   WiFiClientSecure client;
   HTTPClient http;
+  DeserializationError error;
 
   client.setInsecure();
 
@@ -166,8 +168,14 @@ void fetchWeatherJson() {
     "?latitude=50.7753"
     "&longitude=6.0839"
     "&hourly=temperature_2m,weather_code"
-    "&timezone=Europe&2FBerlin" // 2F is the URL encoded form of '/'
+    "&timezone=Europe%2FBerlin" // %2F is the URL encoded form of '/'
     "&forecast_days=1";
+  
+  // error : boolean  
+  if (error) {
+    Serial.print("JSON parse failed: ");
+    Serial.println(error.c_str()); // c_str() gives you the error as a text
+  }
 
   // GET
   http.begin(client, url);
