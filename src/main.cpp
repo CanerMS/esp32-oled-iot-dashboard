@@ -161,8 +161,12 @@ void fetchWeatherJson() {
   client.setInsecure();
 
   // URL
+  String url = 
+    "https://api.open-meteo.com/v1/forecast"
+    "?latitude=50.7753"
+    "&longitude=6.0839"
+    "&hourly=temperature_2m,weather_code";
 
-  // http.begin(...)
 
   // GET
 }
