@@ -35,8 +35,7 @@ const unsigned long SCREEN_INTERVAL = 5000;
 unsigned long lastSwitchTime = 0;
 bool showYoutubeScreen = true;
 
-WiFiClientSecure client;
-HTTPClient http;
+
 
 
 void drawYoutubeScreen() {
@@ -156,7 +155,16 @@ void connectWiFi() {
 }
 
 void fetchWeatherJson() {
+  WiFiClientSecure client;
+  HTTPClient http;
+
   client.setInsecure();
+
+  // URL
+
+  // http.begin(...)
+
+  // GET
 }
 
 void setup() {
