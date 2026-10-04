@@ -159,6 +159,15 @@ void fetchWeatherJson() {
   WiFiClientSecure client;
   HTTPClient http;
   DeserializationError error;
+  JsonDocument doc;
+
+  JsonArray times = doc["hourly"]["time"];
+  JsonArray temperatures = doc["hourly"]["temperature_2m"];
+  JsonArray weatherCodes = doc["hourly"]["weather_code"];
+
+  const char* firstTime = times[0].as<const char*>(); // avoid mismatch for else condition
+  const float firstTemperature = temperatures[0].as<const float>();
+  const float firstWeatherCode = weatherCodes[0].as<const float>();
 
   client.setInsecure();
 
@@ -175,7 +184,13 @@ void fetchWeatherJson() {
   if (error) {
     Serial.print("JSON parse failed: ");
     Serial.println(error.c_str()); // c_str() gives you the error as a text
+    return;
+  } else {
+    Serial.println(firstTime);
+    Serial.println(firstTemperature);
+    Serial.println(firstWeatherCode);
   }
+
 
   // GET
   http.begin(client, url);
