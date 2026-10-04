@@ -1,10 +1,18 @@
 #include <Arduino.h>
-#include <Wire.h>
+#include <Wire.h>  
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
 // Wifi Connection
 #include <WiFi.h>
+
+// Secure client
+#include <WiFiClientSecure.h> // for TLS requirement and data safety
+
+// HTTP
+#include <HTTPClient.h> // HTTP steps ex: GET/POST
+
+
 
 // The WiFi Info
 #include "secrets.h" 
@@ -26,6 +34,9 @@ const unsigned long SCREEN_INTERVAL = 5000;
 
 unsigned long lastSwitchTime = 0;
 bool showYoutubeScreen = true;
+
+WiFiClientSecure client;
+HTTPClient http;
 
 void drawYoutubeScreen() {
   display.clearDisplay();
