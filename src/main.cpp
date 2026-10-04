@@ -159,16 +159,6 @@ void fetchWeatherJson() {
   WiFiClientSecure client;
   HTTPClient http;
   DeserializationError error;
-  JsonDocument doc;
-
-  JsonArray times = doc["hourly"]["time"];
-  JsonArray temperatures = doc["hourly"]["temperature_2m"];
-  JsonArray weatherCodes = doc["hourly"]["weather_code"];
-
-  const char* firstTime = times[0].as<const char*>(); // avoid mismatch for else condition
-  const float firstTemperature = temperatures[0].as<const float>();
-  const float firstWeatherCode = weatherCodes[0].as<const float>();
-
   client.setInsecure();
 
   // URL
@@ -179,18 +169,6 @@ void fetchWeatherJson() {
     "&hourly=temperature_2m,weather_code"
     "&timezone=Europe%2FBerlin" // %2F is the URL encoded form of '/'
     "&forecast_days=1";
-  
-  // error : boolean  
-  if (error) {
-    Serial.print("JSON parse failed: ");
-    Serial.println(error.c_str()); // c_str() gives you the error as a text
-    return;
-  } else {
-    Serial.println(firstTime);
-    Serial.println(firstTemperature);
-    Serial.println(firstWeatherCode);
-  }
-
 
   // GET
   http.begin(client, url);
@@ -203,8 +181,34 @@ void fetchWeatherJson() {
   if (httpCode==200) {
     String payload = http.getString();
     Serial.println(payload);
-  } 
 
+    JsonDocument doc;
+
+    
+
+    error = deserializeJson(doc, payload);
+
+    // error : boolean  
+    if (error) {
+      Serial.print("JSON parse failed: ");
+      Serial.println(error.c_str()); // c_str() gives you the error as a text
+      return;
+    } else {
+      JsonArray times = doc["hourly"]["time"];
+      JsonArray temperatures = doc["hourly"]["temperature_2m"];
+      JsonArray weatherCodes = doc["hourly"]["weather_code"];
+
+
+      const char* firstTime = times[0].as<const char*>(); // avoid mismatch for else condition
+      float firstTemperature = temperatures[0].as<float>();
+      int firstWeatherCode = weatherCodes[0].as<int>();
+      
+      Serial.println(firstTime);
+      Serial.println(firstTemperature);
+      Serial.println(firstWeatherCode);   
+  }
+  http.end();
+  } 
 }
 
 void setup() {
